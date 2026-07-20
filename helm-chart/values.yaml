@@ -1,4 +1,4 @@
-# Default values for k8s-portfolio-chart.
+# Default values for k8s-prod-setup-chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -7,7 +7,7 @@ replicaCount: 2
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: k8s-portfolio
+  repository: k8s-prod-setup
   # This sets the pull policy for images.
   pullPolicy: Never
   # Overrides the image tag whose default is the chart appVersion.
@@ -59,7 +59,7 @@ service:
 
 configmap:
   APP_ENV: "production"
-  APP_NAME: "k8s-portfolio"
+  APP_NAME: "k8s-prod-setup"
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:

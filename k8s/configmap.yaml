@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: k8s-portfolio-config
+  name: k8s-prod-setup-config
 data:
   APP_ENV: "production"
-  APP_NAME: "k8s-portfolio"
+  APP_NAME: "k8s-prod-setup"
