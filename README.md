@@ -7,7 +7,9 @@ This is not a "hello world" throwaway. It reflects how real deployments are stru
 - containerized app
 - environment configuration
 - secrets management
-- and Helm-based packaging.
+- Helm-based packaging
+- observability & monitoring via Prometheus + Grafana
+- CI/CD pipeline automation
 
 ---
 
@@ -38,6 +40,8 @@ This is not a "hello world" throwaway. It reflects how real deployments are stru
 
 ```
 kubernetes-prod-setup/
+├── Makefile                  # Basic automated workflows & command reference
+├── README.md
 ├── app/
 │   ├── main.py               # Flask app with /health endpoint
 │   └── requirements.txt
