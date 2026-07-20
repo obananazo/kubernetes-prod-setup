@@ -1,5 +1,7 @@
 # Kubernetes Prod Setup
 
+![CI](https://github.com/obananazo/kubernetes-prod-setup/actions/workflows/ci.yml/badge.svg)
+
 A production-oriented local Kubernetes setup — built to learn, reference, and reuse.
 
 This is not a "hello world" throwaway. It reflects how real deployments are structured:
