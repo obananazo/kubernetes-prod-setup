@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install flake8 black
+
+      - name: Run black
+        run: black --check app/
+
+      - name: Run flake8
+        run: flake8 app/
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Lint helm chart
+        run: helm lint helm-chart/
+
+  build:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build docker image
+        run: docker build -t k8s-prod-setup:latest .
+
+      - name: Test health endpoint
+        run: |
+          docker run -d -p 8080:8080 --name test-app k8s-prod-setup:latest
+          sleep 3
+          curl --fail http://localhost:8080/health
+          docker stop test-app
