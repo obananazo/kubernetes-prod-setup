@@ -24,7 +24,8 @@ This is not a "hello world" throwaway. It reflects how real deployments are stru
 | Kubernetes | Orchestration |
 | Helm | Package management |
 | Minikube | Local cluster |
-| GitHub Actions | CI/CD *(coming soon)* |
+| GitHub Actions | CI/CD |
+| Terraform (+ Ministack) | IaC *(coming soon)* |
 
 ---
 
@@ -101,8 +102,8 @@ minikube service k8s-prod-setup-k8s-prod-setup-chart --url
 
 All common tasks are available via `make`:
 
-|Command|Description|
-|---|---|
+| Command | Description |
+| ------- | ----------- |
 |`make`|Start cluster, build image, deploy — full setup|
 |`make deploy`|Rebuild image and upgrade Helm release|
 |`make open`|Get app URL|
@@ -120,7 +121,7 @@ All common tasks are available via `make`:
 ## Endpoints
 
 | Endpoint | Description |
-|---|---|
+| -------- | ----------- |
 | `/` | Returns app name and status |
 | `/health` | Health check for liveness & readiness probes |
 
@@ -146,3 +147,4 @@ Secrets are base64-encoded in `k8s/secret.yaml`.
 - [x] GitHub Actions CI/CD pipeline
 - [ ] Ansible playbook for environment setup
 - [ ] Prometheus + Grafana monitoring
+- [ ] Terraform IaC + Ministack
