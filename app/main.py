@@ -2,14 +2,16 @@ from flask import Flask
 
 app = Flask(__name__)
 
-@app.route('/')
+
+@app.route("/")
 def hello():
     return {"message": "Hello from Kubernetes!", "status": "healthy"}
 
-@app.route('/health')
+
+@app.route("/health")
 def health():
     return {"status": "ok"}
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
