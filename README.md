@@ -18,7 +18,7 @@ This is not a "hello world" throwaway. It reflects how real deployments are stru
 ## Stack
 
 | Tool | Purpose |
-|---|---|
+| ---- | ------- |
 | Python + Flask | Application |
 | Docker | Containerization |
 | Kubernetes | Orchestration |
@@ -40,7 +40,7 @@ This is not a "hello world" throwaway. It reflects how real deployments are stru
 
 ## Project Structure
 
-```
+```bash
 kubernetes-prod-setup/
 ├── Makefile                  # Basic automated workflows & command reference
 ├── README.md
@@ -143,6 +143,6 @@ Secrets are base64-encoded in `k8s/secret.yaml`.
 - [x] Secrets & Env management
 - [x] Helm chart
 - [x] Pre-commit hooks & linting
-- [ ] GitHub Actions CI/CD pipeline
+- [x] GitHub Actions CI/CD pipeline
 - [ ] Ansible playbook for environment setup
 - [ ] Prometheus + Grafana monitoring
