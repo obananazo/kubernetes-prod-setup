@@ -1,4 +1,4 @@
-# kubernetes-prod-setup
+# Kubernetes Prod Setup
 
 A production-oriented local Kubernetes setup — built to learn, reference, and reuse.
 
@@ -140,7 +140,7 @@ Secrets are base64-encoded in `k8s/secret.yaml`.
 - [x] Kubernetes manifests
 - [x] Secrets & Env management
 - [x] Helm chart
-- [ ] Pre-commit hooks & linting
+- [x] Pre-commit hooks & linting
 - [ ] GitHub Actions CI/CD pipeline
 - [ ] Ansible playbook for environment setup
 - [ ] Prometheus + Grafana monitoring
