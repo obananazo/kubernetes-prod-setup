@@ -47,11 +47,16 @@ This is not a "hello world" throwaway. It reflects how real deployments are stru
 
 ```sh
 .
+├── .github                 # Github Actions CI/CD
+│   └── workflows
+│       └── ci.yml
+├── .gitignore
+├── .pre-commit-config.yaml # Pre-commit hooks
 ├── Dockerfile              # Containerization
 ├── Makefile                # Automated workflows & command reference
 ├── README.md
-├── app
-│   ├── main.py             # Flask App with '/health' endpoint
+├── app                     # Flask App with '/health' endpoint
+│   ├── main.py
 │   └── requirements.txt
 ├── helm-chart              # Helm templates
 │   ├── Chart.yaml
