@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/obananazo/kubernetes-prod-setup/actions/workflows/ci.yml/badge.svg)
 
-A production-oriented local Kubernetes setup — built to learn, reference, and reuse.
+A production-oriented local Kubernetes setup. Built to learn, reference, and reuse.
 
 This is not a "hello world" throwaway. It reflects how real deployments are structured:
 
@@ -11,7 +11,9 @@ This is not a "hello world" throwaway. It reflects how real deployments are stru
 - secrets management
 - Helm-based packaging
 - observability & monitoring via Prometheus + Grafana
-- CI/CD pipeline automation
+- automated continuous integration & delivery
+- Terraform code for infrastructure provisioning
+- pre-commit hooks ensuring code style standards
 
 ---
 
@@ -36,31 +38,37 @@ This is not a "hello world" throwaway. It reflects how real deployments are stru
 - Liveness & readiness probes on `/health` endpoint
 - Clean separation of app code, raw manifests, and Helm chart
 - Local development workflow with Minikube
+- Github Actions CI/CD
+- Terraform IaC
 
 ---
 
 ## Project Structure
 
-```bash
-kubernetes-prod-setup/
-├── Makefile                  # Basic automated workflows & command reference
+```sh
+.
+├── Dockerfile              # Containerization
+├── Makefile                # Automated workflows & command reference
 ├── README.md
-├── app/
-│   ├── main.py               # Flask app with /health endpoint
+├── app
+│   ├── main.py             # Flask App with '/health' endpoint
 │   └── requirements.txt
-├── Dockerfile
-├── k8s/                      # Raw Kubernetes manifests
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   ├── configmap.yaml
-│   └── secret.yaml
-└── k8s-prod-setup-chart/      # Helm Chart
-    ├── Chart.yaml
-    ├── values.yaml
-    └── templates/
-        ├── deployment.yaml
-        ├── service.yaml
-        └── configmap.yaml
+├── helm-chart              # Helm templates
+│   ├── Chart.yaml
+│   ├── charts
+│   ├── templates
+│   │   ├── NOTES.txt
+│   │   ├── _helpers.tpl
+│   │   ├── configmap.yaml
+│   │   ├── deployment.yaml
+│   │   ├── service.yaml
+│   │   └── tests
+│   └── values.yaml
+└── k8s                     # Kubernetes manifests
+    ├── configmap.yaml
+    ├── deployment.yaml
+    ├── secret.yaml
+    └── service.yaml
 ```
 
 ---
