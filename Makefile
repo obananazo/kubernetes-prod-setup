@@ -70,7 +70,7 @@ else
 	kubectl logs $$(kubectl get pods --no-headers -o custom-columns=":metadata.name" | grep $(HELM_RELEASE) | head -1)
 endif
 
-## Describe a pod (usage: make describe POD=<pod-name>)
+## Describe a pod (usage: make describe <pod-name>)
 describe:
 	kubectl describe pod $$(kubectl get pods --no-headers -o custom-columns=":metadata.name" | grep $(HELM_RELEASE) | head -1)
 
