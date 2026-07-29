@@ -4,12 +4,12 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def hello():
+def hello() -> dict:
     return {"message": "Hello from Kubernetes!", "status": "healthy"}
 
 
 @app.route("/health")
-def health():
+def health() -> dict:
     return {"status": "ok"}
 
 
