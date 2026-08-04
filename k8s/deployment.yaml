@@ -7,15 +7,16 @@ spec:
   selector:
     matchLabels:
       app: k8s-prod-setup
-  template:
+  template:               # <-- Template for pods
     metadata:
       labels:
         app: k8s-prod-setup
     spec:
+      # servicAccountName: k8s-prod-setup-service-account   # best practice for secrets management
       containers:
         - name: k8s-prod-setup
           image: k8s-prod-setup:latest
-          imagePullPolicy: Never
+          imagePullPolicy: Never  # Use local image, do not pull from registry
           ports:
             - containerPort: 8080
           env:

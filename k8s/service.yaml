@@ -6,6 +6,6 @@ spec:
   selector:
     app: k8s-prod-setup
   ports:
-    - port: 80
-      targetPort: 8080
-  type: NodePort
+    - port: 80          # Service port (e.g. Loadbalancer)
+      targetPort: 8080  # Node port (internal container port)
+  type: NodePort        # Expose the Nodes so they're accessible from outside the cluster

@@ -4,7 +4,7 @@
 
 A production-oriented local Kubernetes setup. Built to learn, reference, and reuse.
 
-This is not a "hello world" throwaway. It reflects how real deployments are structured:
+It reflects how real deployments are structured:
 
 - containerized app
 - environment configuration
