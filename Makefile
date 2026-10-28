@@ -23,7 +23,9 @@ deploy: build upgrade
 clean: uninstall stop
 
 
-# --- Local Environment ---
+# -------------------------------------------------------
+# Local Environment
+# -------------------------------------------------------
 
 # Start Minikube cluster
 start:
@@ -41,7 +43,9 @@ status:
 	kubectl get pods
 
 
-# --- Docker ---
+# -------------------------------------------------------
+# Docker
+# -------------------------------------------------------
 
 # Build Docker image inside Minikube's Docker context
 build:
@@ -52,7 +56,9 @@ images:
 	docker images | grep $(IMAGE_NAME)
 
 
-# --- Kubernetes ---
+# -------------------------------------------------------
+# Kubernetes
+# -------------------------------------------------------
 
 # Show running pods
 pods:
@@ -79,7 +85,9 @@ restart:
 	kubectl rollout restart deployment
 
 
-# --- Helm ---
+# -------------------------------------------------------
+# Helm
+# -------------------------------------------------------
 
 # Install Helm release
 install:
@@ -116,3 +124,22 @@ template:
 # Open app URL in terminal
 open:
 	minikube service --url --namespace default $$(kubectl get svc --no-headers -o custom-columns=":metadata.name" | grep $(HELM_RELEASE))
+
+# -------------------------------------------------------
+# Monitoring
+# -------------------------------------------------------
+
+## Open Grafana in browser
+grafana:
+	kubectl port-forward -n monitoring svc/monitoring-grafana 3000:80 &
+	open http://localhost:3000
+
+## Get Grafana admin password
+grafana-pw:
+	kubectl get secret -n monitoring monitoring-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+	@echo ""
+
+## Open Prometheus UI
+prometheus:
+	kubectl port-forward -n monitoring svc/monitoring-kube-prometheus-prometheus 9090:9090 &
+	open http://localhost:9090
