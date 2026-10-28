@@ -158,6 +158,6 @@ Secrets are base64-encoded in `k8s/secret.yaml`.
 - [x] Helm chart
 - [x] Pre-commit hooks & linting
 - [x] GitHub Actions CI/CD pipeline
+- [x] Prometheus + Grafana monitoring
 - [ ] Ansible playbook for environment setup
-- [ ] Prometheus + Grafana monitoring
 - [ ] Terraform IaC + Ministack
