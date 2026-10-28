@@ -27,6 +27,8 @@ It reflects how real deployments are structured:
 | Helm | Package management |
 | Minikube | Local cluster |
 | GitHub Actions | CI/CD |
+| Prometheus | Metrics collection & scraping |
+| Grafana | Visualization & dashboards |
 | Terraform (+ Ministack) | IaC *(coming soon)* |
 
 ---
@@ -72,8 +74,8 @@ It reflects how real deployments are structured:
 └── k8s                     # Kubernetes manifests
     ├── configmap.yaml
     ├── deployment.yaml
-    ├── secret.yaml
-    └── service.yaml
+    ├── service.yaml
+    └── servicemonitor.yaml
 ```
 
 ---
@@ -129,6 +131,17 @@ All common tasks are available via `make`:
 |`make rollback`|Rollback to previous Helm revision|
 |`make clean`|Full teardown|
 
+> [!NOTE]
+> If using MacOS (darwin) the terminal needs to be kept open (`make open`) in a separate terminal
+
+### Monitoring
+
+| Command | Description |
+| ------- | ----------- |
+|`make grafana`|Open Grafana in browser|
+|`make grafana-pw`|Get Grafana admin password|
+|`make prometheus`|Open Prometheus UI|
+
 ---
 
 ## Endpoints
@@ -137,6 +150,7 @@ All common tasks are available via `make`:
 | -------- | ----------- |
 | `/` | Returns app name and status |
 | `/health` | Health check for liveness & readiness probes |
+| `/metrics` | Used by Prometheus for scraping metrics |
 
 ---
 
