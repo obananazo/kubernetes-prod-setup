@@ -21,7 +21,8 @@ It reflects how real deployments are structured:
 
 | Tool | Purpose |
 | ---- | ------- |
-| Python + Flask | Application |
+| Python + Flask | Microservices |
+| PostgreSQL | Database |
 | Docker | Containerization |
 | Kubernetes | Orchestration |
 | Helm | Package management |
@@ -35,13 +36,15 @@ It reflects how real deployments are structured:
 
 ## What this demonstrates
 
-- Kubernetes `Deployment`, `Service`, `ConfigMap`, and `Secret` manifests
-- Helm Chart with templated values for environment-specific configuration
-- Liveness & readiness probes on `/health` endpoint
-- Clean separation of app code, raw manifests, and Helm chart
-- Local development workflow with Minikube
-- Github Actions CI/CD
-- Terraform IaC
+A realistic microservices architecture (e-commerce example) running on Kubernetes that reflects how production deployments are structured.
+
+- **Microservices** — independently deployable services with their own databases (User Service with PostgreSQL, JWT authentication)
+- **Kubernetes primitives** — `Deployment`, `Service`, `ConfigMap`, `Secret`, `ServiceMonitor`
+- **Helm** — templated, environment-specific deployments
+- **Observability** — Prometheus metrics scraping + Grafana dashboards
+- **CI/CD** — GitHub Actions pipeline with linting, formatting, and Docker build
+- **Security** — secrets management, never hardcoded credentials
+- **Developer experience** — Makefile workflows, pre-commit hooks, clean code standards
 
 ---
 
@@ -49,33 +52,26 @@ It reflects how real deployments are structured:
 
 ```sh
 .
-├── .github                 # Github Actions CI/CD
-│   └── workflows
-│       └── ci.yml
+├── .github
+│   └── workflows               # Github Actions CI/CD
 ├── .gitignore
-├── .pre-commit-config.yaml # Pre-commit hooks
-├── Dockerfile              # Containerization
-├── Makefile                # Automated workflows & command reference
+├── .pre-commit-config.yaml     # Pre-commit hooks
+├── DECISIONS.md                # Info on chosen technologies
+├── Makefile                    # Automated workflows & command reference
 ├── README.md
-├── app                     # Flask App with '/health' endpoint
-│   ├── main.py
-│   └── requirements.txt
-├── helm-chart              # Helm templates
+├── helm-chart                  # Helm templates
 │   ├── Chart.yaml
 │   ├── charts
 │   ├── templates
-│   │   ├── NOTES.txt
-│   │   ├── _helpers.tpl
-│   │   ├── configmap.yaml
-│   │   ├── deployment.yaml
-│   │   ├── service.yaml
-│   │   └── tests
 │   └── values.yaml
-└── k8s                     # Kubernetes manifests
-    ├── configmap.yaml
-    ├── deployment.yaml
-    ├── service.yaml
-    └── servicemonitor.yaml
+├── k8s                         # Kubernetes manifests
+│   ├── configmap.yaml
+│   ├── deployment.yaml
+│   ├── secret.yaml
+│   ├── service.yaml
+│   └── servicemonitor.yaml
+└── services                    # Microservices for e-commerce example
+    └── user-service
 ```
 
 ---
@@ -166,12 +162,17 @@ Secrets are base64-encoded in `k8s/secret.yaml`.
 
 ## Roadmap
 
-- [x] Basic containerized App
-- [x] Kubernetes manifests
-- [x] Secrets & Env management
-- [x] Helm chart
+- [x] ~~Basic containerized App~~ [Removed]
+- [ ] E-commerce Demo/Microservices
+    - [x] User service
+    - [ ] Product service
+    - [ ] Order service
+    - [ ] API Gateway
 - [x] Pre-commit hooks & linting
 - [x] GitHub Actions CI/CD pipeline
-- [x] Prometheus + Grafana monitoring
+- [x] Kubernetes manifests
+- [x] Helm chart
+- [x] Secrets & Env management
+- [ ] Prometheus + Grafana monitoring
 - [ ] Ansible playbook for environment setup
 - [ ] Terraform IaC + Ministack
