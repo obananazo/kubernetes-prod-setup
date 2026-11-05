@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - 'README.md'
       - '*.md'
+      - 'Makefile'
   pull_request:
     branches: [ main ]
     paths-ignore:
@@ -16,6 +17,11 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - service: user-service
+            port: 8001
     steps:
       - uses: actions/checkout@v4
 
@@ -26,12 +32,15 @@ jobs:
 
       - name: Install dependencies
         run: pip install flake8 black
+        working-directory: services/${{ matrix.service }}
 
       - name: Run black
         run: black --check app/
+        working-directory: services/${{ matrix.service }}
 
       - name: Run flake8
         run: flake8 app/
+        working-directory: services/${{ matrix.service }}
 
       - name: Install Helm
         uses: azure/setup-helm@v4
@@ -40,17 +49,25 @@ jobs:
         run: helm lint helm-chart/
 
   build:
-    runs-on: ubuntu-latest
     needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - service: user-service
+            port: 8001
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build docker image
-        run: docker build -t k8s-prod-setup:latest .
+      - name: Build Docker image
+        run: docker build -t ${{ matrix.service }}:latest .
 
       - name: Test health endpoint
         run: |
-          docker run -d -p 8080:8080 --name test-app k8s-prod-setup:latest
+          docker run -d -p ${{ matrix.port }}:${{ matrix.port }} \
+            -e JWT_SECRET_KEY=test-secret \
+            -e DATABASE_URL=sqlite:///test.db \
+            --name test-${{ matrix.service }} ${{ matrix.service }}:latest
           sleep 3
-          curl --fail http://localhost:8080/health
-          docker stop test-app
+          curl --fail http://localhost:${{ matrix.port }}/health
+          docker stop test-${{ matrix.service }}
