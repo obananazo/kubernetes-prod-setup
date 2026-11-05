@@ -61,6 +61,7 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t ${{ matrix.service }}:latest .
+        working-directory: services/${{ matrix.service }}
 
       - name: Test health endpoint
         run: |
