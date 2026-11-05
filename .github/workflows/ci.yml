@@ -22,7 +22,7 @@ jobs:
         include:
           - service: user-service
             port: 8001
-          - product: product-service
+          - service: product-service
             port: 8002
     steps:
       - uses: actions/checkout@v4
@@ -58,6 +58,8 @@ jobs:
         include:
           - service: user-service
             port: 8001
+          - service: product-service
+            port: 8002
     steps:
       - uses: actions/checkout@v4
 
