@@ -165,7 +165,7 @@ Secrets are base64-encoded in `k8s/secret.yaml`.
 - [x] ~~Basic containerized App~~ [Removed]
 - [ ] E-commerce Demo/Microservices
     - [x] User service
-    - [ ] Product service
+    - [x] Product service
     - [ ] Order service
     - [ ] API Gateway
 - [x] Pre-commit hooks & linting
