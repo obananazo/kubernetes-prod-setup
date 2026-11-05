@@ -49,7 +49,8 @@ status:
 
 # Build Docker image inside Minikube's Docker context
 build:
-	eval $$(minikube docker-env) && docker build -t $(IMAGE_NAME):latest .
+# 	!TEMPORARILY DISABLED
+# 	eval $$(minikube docker-env) && docker build -t $(IMAGE_NAME):latest .
 
 # List local images
 images:
