@@ -24,6 +24,8 @@ jobs:
             port: 8001
           - service: product-service
             port: 8002
+          - service: order-service
+            port: 8003
     steps:
       - uses: actions/checkout@v4
 
@@ -60,6 +62,8 @@ jobs:
             port: 8001
           - service: product-service
             port: 8002
+          - service: order-service
+            port: 8003
     steps:
       - uses: actions/checkout@v4
 
