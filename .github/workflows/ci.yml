@@ -3,16 +3,14 @@ name: CI
 on:
   push:
     branches: [ main ]
-    paths-ignore:
-      - 'README.md'
-      - '*.md'
-      - 'Makefile'
+    paths:
+      - 'services/**'
+      - '.github/workflows/**'
   pull_request:
     branches: [ main ]
-    paths-ignore:
-      - 'README.md'
-      - '*.md'
-      - 'Makefile'
+    paths:
+      - 'services/**'
+      - '.github/workflows/**'
 
 jobs:
   lint:
