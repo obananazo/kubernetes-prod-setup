@@ -1,6 +1,8 @@
 # Kubernetes Prod Setup
 
-![CI](https://github.com/obananazo/kubernetes-prod-setup/actions/workflows/ci.yml/badge.svg)
+[![Lint & build](https://github.com/obananazo/kubernetes-prod-setup/actions/workflows/lint-and-build.yml/badge.svg)](https://github.com/obananazo/kubernetes-prod-setup/actions/workflows/lint-and-build.yml)
+
+[![Validate manifests](https://github.com/obananazo/kubernetes-prod-setup/actions/workflows/validate-manifests.yml/badge.svg)](https://github.com/obananazo/kubernetes-prod-setup/actions/workflows/validate-manifests.yml)
 
 A production-oriented local Kubernetes setup. Built to learn, reference, and reuse.
 
