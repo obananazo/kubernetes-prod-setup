@@ -24,22 +24,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v4
+      - name: Install kubeconform
+        run: |
+          curl -L https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz | tar xz
+          sudo mv kubeconform /usr/local/bin/
 
       - name: Validate ${{ matrix.service }} manifests
-        run: kubectl apply --dry-run=client -f services/${{ matrix.service }}/k8s/ --validate=false
+        run: kubeconform -strict services/${{ matrix.service }}/k8s/
 
   validate-cluster-manifests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v4
+      - name: Install kubeconform
+        run: |
+          curl -L https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz | tar xz
+          sudo mv kubeconform /usr/local/bin/
 
       - name: Validate cluster manifests
-        run: kubectl apply --dry-run=client -f k8s/ --validate=false
+        run: kubeconform -strict k8s/
 
   lint-helm:
     runs-on: ubuntu-latest
