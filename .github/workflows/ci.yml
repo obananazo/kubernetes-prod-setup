@@ -44,12 +44,6 @@ jobs:
         run: flake8 app/
         working-directory: services/${{ matrix.service }}
 
-      - name: Install Helm
-        uses: azure/setup-helm@v4
-
-      - name: Lint helm chart
-        run: helm lint helm-chart/
-
   build:
     needs: lint
     runs-on: ubuntu-latest

@@ -5,13 +5,31 @@ on:
     branches: [ main ]
     paths:
       - 'k8s/**'
+      - 'services/**/k8s/**'
+      - 'helm-chart/**'
   pull_request:
     branches: [ main ]
     paths:
       - 'k8s/**'
+      - 'services/**/k8s/**'
+      - 'helm-chart/**'
 
 jobs:
-  validate-manifests:
+  validate-service-manifests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [user-service, product-service, order-service]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Validate ${{ matrix.service }} manifests
+        run: kubectl apply --dry-run=client -f services/${{ matrix.service }}/k8s/ --validate=false
+
+  validate-cluster-manifests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,5 +37,16 @@ jobs:
       - name: Set up kubectl
         uses: azure/setup-kubectl@v4
 
-      - name: Validate Kubernetes manifests
+      - name: Validate cluster manifests
         run: kubectl apply --dry-run=client -f k8s/ --validate=false
+
+  lint-helm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Lint Helm chart
+        run: helm lint helm-chart/
