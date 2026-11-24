@@ -4,9 +4,11 @@ import requests
 from database import engine, init_db
 from flask import Flask, jsonify, request
 from models import Order, OrderItem
+from prometheus_flask_exporter import PrometheusMetrics
 from sqlalchemy.orm import Session, joinedload
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
 
 PRODUCT_SERVICE_URL = os.environ.get("PRODUCT_SERVICE_URL", "http://product-service")
 

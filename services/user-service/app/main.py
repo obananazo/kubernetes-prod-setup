@@ -22,7 +22,6 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = int(
 )
 
 metrics = PrometheusMetrics(app)
-
 jwt = JWTManager(app)
 
 init_db()

@@ -3,9 +3,11 @@ import os
 from database import engine, init_db
 from flask import Flask, jsonify, request
 from models import Product
+from prometheus_flask_exporter import PrometheusMetrics
 from sqlalchemy.orm import Session
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
 
 init_db()
 
