@@ -53,25 +53,29 @@ A realistic microservices architecture (e-commerce example) running on Kubernete
 ```sh
 .
 ├── .github
+│   ├── PULL_REQUEST_TEMPLATE.md
 │   └── workflows               # Github Actions CI/CD
 ├── .gitignore
 ├── .pre-commit-config.yaml     # Pre-commit hooks
+├── API.md                      # API endpoints reference
 ├── DECISIONS.md                # Info on chosen technologies
 ├── Makefile                    # Automated workflows & command reference
 ├── README.md
 ├── helm-chart                  # Helm templates
+│   ├── .helmignore
 │   ├── Chart.yaml
 │   ├── charts
 │   ├── templates
 │   └── values.yaml
-├── k8s                         # Kubernetes manifests
-│   ├── configmap.yaml
-│   ├── deployment.yaml
-│   ├── secret.yaml
-│   ├── service.yaml
-│   └── servicemonitor.yaml
-└── services                    # Microservices for e-commerce example
-    └── user-service
+├── k8s                         # Cluster-wide K8s manifests
+│   └── ingress.yaml
+├── monitoring
+│   └── dashboard.yaml          # Grafana dashboard
+├── services                    # Microservices for e-commerce example
+│   ├── order-service
+│   ├── product-service
+│   └── user-service
+└── setup.cfg                   # Project-level config
 ```
 
 ---
@@ -88,28 +92,60 @@ brew install minikube kubectl helm
 
 ```bash
 minikube start
+```
+
+### Deploy all services
+
+```bash
+# Create secrets
+kubectl create secret generic user-service-secret \
+  --from-literal=JWT_SECRET_KEY=change-me \
+  --from-literal=POSTGRES_PASSWORD=change-me \
+  --from-literal=POSTGRES_USER=postgres \
+  --from-literal=DATABASE_URL=postgresql://postgres:change-me@user-postgres:5432/users
+
+kubectl create secret generic product-service-secret \
+  --from-literal=POSTGRES_PASSWORD=change-me \
+  --from-literal=POSTGRES_USER=postgres \
+  --from-literal=DATABASE_URL=postgresql://postgres:change-me@product-postgres:5432/products
+
+kubectl create secret generic order-service-secret \
+  --from-literal=POSTGRES_PASSWORD=change-me \
+  --from-literal=POSTGRES_USER=postgres \
+  --from-literal=DATABASE_URL=postgresql://postgres:change-me@order-postgres:5432/orders
+
+# Build images
 eval $(minikube docker-env)
+docker build -t user-service:latest services/user-service/
+docker build -t product-service:latest services/product-service/
+docker build -t order-service:latest services/order-service/
+
+# Deploy
+kubectl apply -f services/user-service/k8s/
+kubectl apply -f services/product-service/k8s/
+kubectl apply -f services/order-service/k8s/
+
+# Enable Ingress
+minikube addons enable ingress
+kubectl apply -f k8s/
 ```
 
-### Build the image
+### Access the services
 
 ```bash
-docker build -t k8s-prod-setup:latest .
-```
+# Start tunnel (keep open in separate terminal)
+minikube tunnel
 
-### Deploy with Helm
-
-```bash
-helm install k8s-prod-setup k8s-prod-setup-chart/
-```
-
-### Access the app
-
-```bash
-minikube service k8s-prod-setup-k8s-prod-setup-chart --url
+# Test endpoints
+curl http://localhost/api/users/health
+curl http://localhost/api/products/health
+curl http://localhost/api/orders/health
 ```
 
 ## Makefile
+
+> [!WARNING]
+> Makefile commands are partially outdated — currently being updated for the microservices setup.
 
 All common tasks are available via `make`:
 
@@ -138,22 +174,25 @@ All common tasks are available via `make`:
 |`make grafana-pw`|Get Grafana admin password|
 |`make prometheus`|Open Prometheus UI|
 
+### Import the dashboard
+
+1. Open Grafana (`make grafana`)
+2. Go to **Dashboards → Import**
+3. Upload `monitoring/dashboard.json` or paste its contents
+4. Select **Prometheus** as the data source
+5. Click **Import**
+
 ---
 
 ## Endpoints
 
-| Endpoint | Description |
-| -------- | ----------- |
-| `/` | Returns app name and status |
-| `/health` | Health check for liveness & readiness probes |
-| `/metrics` | Used by Prometheus for scraping metrics |
+See [API.md](API.md) for the full API reference.
 
 ---
 
 ## Configuration
 
-Environment variables are managed via Kubernetes ConfigMap and injected at runtime.
-Secrets are base64-encoded in `k8s/secret.yaml`.
+Secrets are managed via Kubernetes Secrets, injected as environment variables at runtime.
 
 > ⚠️ Secrets in this repo are example values only.
 > In production, secrets are managed via AWS Secrets Manager or HashiCorp Vault — never hardcoded in YAML.
@@ -163,16 +202,16 @@ Secrets are base64-encoded in `k8s/secret.yaml`.
 ## Roadmap
 
 - [x] ~~Basic containerized App~~ [Removed]
-- [ ] E-commerce Demo/Microservices
+- [x] E-commerce Demo/Microservices
     - [x] User service
     - [x] Product service
     - [x] Order service
-    - [ ] API Gateway
+    - [x] API Gateway
 - [x] Pre-commit hooks & linting
 - [x] GitHub Actions CI/CD pipeline
 - [x] Kubernetes manifests
 - [x] Helm chart
 - [x] Secrets & Env management
-- [ ] Prometheus + Grafana monitoring
-- [ ] Ansible playbook for environment setup
+- [x] Prometheus + Grafana monitoring
 - [ ] Terraform IaC + Ministack
+- [ ] Ansible playbook for environment setup
