@@ -44,8 +44,30 @@ jobs:
         run: flake8 app/
         working-directory: services/${{ matrix.service }}
 
-  build:
+  test:
     needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [user-service]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: services/${{ matrix.service }}
+
+      - name: Run tests
+        run: PYTHONPATH=app pytest tests/ -v
+        working-directory: services/${{ matrix.service }}
+
+  build:
+    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
